@@ -338,6 +338,41 @@ public class Go : MonoBehaviour
 		return false;
 	}
 
+	/// <summary>
+	// removes all Tweens
+	/// </summary>
+	public static void removeAllTweens()
+	{
+		if(_tweens.Count > 0) {
+			/*
+			// destroy any undestroyed tweens
+			for( var i = _tweens.Count - 1; i >= 0; --i )
+			{
+				var t = _tweens[i];
+				
+				if( t.state != GoTweenState.Destroyed )
+				{
+					// destroy method has not been called
+					t.destroy();
+				}
+			}
+			*/
+
+			_tweens.Clear();
+
+#if UNITY_EDITOR
+			if( _instance != null )
+				_instance.gameObject.name = string.Format( "GoKit ({0} tweens)", _tweens.Count );
+#endif
+
+			if( _instance != null )
+			{
+				// disable ourself if we have no more tweens
+				_instance.enabled = false;
+			}
+		}
+	}
+
 
 	/// <summary>
 	/// returns a list of all Tweens, TweenChains and TweenFlows with the given id
