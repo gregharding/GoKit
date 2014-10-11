@@ -542,4 +542,21 @@ public class GoTweenConfig
 		return this;
 	}
 
+	/// <summary>
+	/// clones the instance
+	/// </summary>
+	public GoTweenConfig clone()
+	{
+		var other = this.MemberwiseClone() as GoTweenConfig;
+
+		other._tweenProperties = new List<AbstractTweenProperty>( 2 );
+		for( int k = 0; k < this._tweenProperties.Count; ++k )
+		{
+			AbstractTweenProperty tweenProp = this._tweenProperties[k];
+			other._tweenProperties.Add(tweenProp);
+		}
+
+		return other;
+	}
+
 }
