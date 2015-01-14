@@ -85,6 +85,8 @@ public class Go : MonoBehaviour
 				}
 			}
 		}
+
+		if (shouldRemoveAllTweens) removeAllTweens(true);
 	}
 
 
@@ -366,8 +368,18 @@ public class Go : MonoBehaviour
 	/// <summary>
 	// removes all Tweens
 	/// </summary>
-	public static void removeAllTweens()
+	protected static bool shouldRemoveAllTweens;
+	public static void removeAllTweens(bool immediately=false)
 	{
+		// flag future removal (to ensure removal is outside main update loops)
+		if (!immediately) {
+			shouldRemoveAllTweens = true;
+			return;
+		}
+
+		// remove now
+		shouldRemoveAllTweens = false;
+
 		if(_tweens.Count > 0) {
 			/*
 			// destroy any undestroyed tweens
