@@ -59,8 +59,11 @@ public class Go : MonoBehaviour
 	/// loops through all the Tweens and updates any that are of updateType. If any Tweens are complete
 	/// (the update call will return true) they are removed.
 	/// </summary>
+	private bool _isUpdating;
 	private void handleUpdateOfType( GoUpdateType updateType, float deltaTime )
 	{
+		_isUpdating = true;
+
 		// loop backwards so we can remove completed tweens
 		for( var i = _tweens.Count - 1; i >= 0; --i )
 		{
@@ -86,7 +89,7 @@ public class Go : MonoBehaviour
 			}
 		}
 
-		if (shouldRemoveAllTweens) removeAllTweens(true);
+		_isUpdating = false;
 	}
 
 
@@ -368,17 +371,13 @@ public class Go : MonoBehaviour
 	/// <summary>
 	// removes all Tweens
 	/// </summary>
-	protected static bool shouldRemoveAllTweens;
-	public static void removeAllTweens(bool immediately=false)
+	public static void removeAllTweens()
 	{
-		// flag future removal (to ensure removal is outside main update loops)
-		if (!immediately) {
-			shouldRemoveAllTweens = true;
+		// ensure removal is outside main update loops
+		if (_instance._isUpdating) {
+			_instance.StartCoroutine(removeAllTweensCoroutine());
 			return;
 		}
-
-		// remove now
-		shouldRemoveAllTweens = false;
 
 		if(_tweens.Count > 0) {
 			/*
@@ -408,6 +407,14 @@ public class Go : MonoBehaviour
 				_instance.enabled = false;
 			}
 		}
+	}
+
+	protected static IEnumerator removeAllTweensCoroutine() {
+		// delay until after main update loops, then remove all tweens
+		yield return null;
+
+		// cleanup
+		removeAllTweens();
 	}
 
 
