@@ -373,6 +373,9 @@ public class Go : MonoBehaviour
 	/// </summary>
 	public static void removeAllTweens()
 	{
+		// ensure instance exists
+		if (_instance == null) return;
+
 		// ensure removal is outside main update loops
 		if (_instance._isUpdating) {
 			_instance.StartCoroutine(removeAllTweensCoroutine());
