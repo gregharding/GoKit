@@ -184,7 +184,7 @@ public class Go : MonoBehaviour
 				if( tweenWithTarget.containsTweenProperty( tweenProp ) )
 				{
 					warn( "found duplicate TweenProperty {0} in tween {1}", tweenProp, tween );
-
+					
 					// handle the different duplicate property rules
 					if( duplicatePropertyRule == GoDuplicatePropertyRuleType.DontAddCurrentProperty )
 					{
